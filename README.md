@@ -2,17 +2,29 @@
 This is a game made in order to learn Java and the following libraries
 
 java.awt.Graphics2D
+
 java.awt.Rectagle
+
 java.io.IOException
+
 java.awt.image.BufferedImage
+
 javax.imageio.ImageIO
+
 java.awt.event.KeyEvent
+
 java.awt.event.KeyListener
+
 javax.swing.JFrame
+
 java.awt.Color
+
 java.awt.Dimention
+
 java.awt.Graphics
+
 java.awt.event.MouseEvent
+
 java.awt.MouseListener
 
 
