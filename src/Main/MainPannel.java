@@ -47,7 +47,7 @@ public class MainPannel extends JPanel implements Runnable {
     TileManager tileM = new TileManager(this); //kaloume to tilManager class apo ta TextureTiles
 
     KeyHandler keyH = new KeyHandler(); //start keyhandler to game panel
-
+    MouseHandler MouseH = new MouseHandler();
     
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public Asset asset = new Asset(this);
@@ -55,7 +55,7 @@ public class MainPannel extends JPanel implements Runnable {
     Thread gameThread;
 
     //to kano public oste na to pernei sto tileManager me tin camera movement
-    public Player player = new Player(this, keyH);
+    public Player player = new Player(this, keyH, MouseH);
     public object obj[] = new object[10];
     public environment env[] = new environment[400];
 
@@ -65,6 +65,7 @@ public class MainPannel extends JPanel implements Runnable {
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH); //adding keyhandler to game panel
+        this.addMouseListener(MouseH);
         this.setFocusable(true);
     }
 
@@ -113,7 +114,7 @@ public class MainPannel extends JPanel implements Runnable {
 
     public void update() {
      player.update();
-     System.out.println(player.WorldX + " " + player.WorldY);
+     //System.out.println(player.WorldX + " " + player.WorldY);
 
     }
     

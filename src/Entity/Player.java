@@ -2,6 +2,7 @@ package Entity;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+
 import java.io.IOException;
 
 import java.awt.image.BufferedImage;
@@ -10,11 +11,14 @@ import javax.imageio.ImageIO;
 
 import Main.MainPannel;
 import Main.KeyHandler;
+import Main.MouseHandler;
+
 
 public class Player extends Entity {
 
     MainPannel gp;
     KeyHandler keyH;
+    MouseHandler MouseH;
 
     public final int screenX;
     public final int screenY;
@@ -27,9 +31,10 @@ public class Player extends Entity {
     String previous_direction;
 
 
-    public Player(MainPannel gp, KeyHandler keyH) {
+    public Player(MainPannel gp, KeyHandler keyH, MouseHandler MouseH) {
         this.gp = gp;
         this.keyH = keyH;
+        this.MouseH = MouseH;
 
         screenX = gp.screenWidth/2 - (gp.tileSize/2);  //Gia to camera
         screenY = gp.screenHeight/2 - (gp.tileSize/2); // movement
@@ -169,9 +174,10 @@ public class Player extends Entity {
     }
     
     public void update() {   
-
+        System.out.println("Mattack is " + MouseH.Mattack);
         //test gia to attack mode
-        if(keyH.attack == true) {
+        if(keyH.attack == true || MouseH.Mattack == true) {
+            
             
             direction = "attack";
 
@@ -201,13 +207,13 @@ public class Player extends Entity {
             
             }
                          
-        } else if(keyH.attack == false) {
+        } else if(keyH.attack == false && MouseH.Mattack == false) {
             spriteNum_for_attack = 4; //kanei reset to animation se ena sigekrimeno image, edo evala to 4
         }
         //test gia to attack mode
         
         if(keyH.upPressed == false || keyH.downPressed == false || keyH.leftPressed == false || keyH.rightPressed == false ) 
-        if(keyH.attack == false) {
+        if(keyH.attack == false && MouseH.Mattack == false) { 
             //Edo vale to standing animation na paizei
             direction = "none";
             
@@ -251,7 +257,7 @@ public class Player extends Entity {
             }
         }
         if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true)
-        if(keyH.attack == false) {
+        if(keyH.attack == false && MouseH.Mattack == false) {
             if(keyH.upPressed == true) {
                 direction ="up";  //to 0,0 se x,y sto JPanel einai h pano goneia aristera
                 //Den xreiazete pleon einai sto switch kato -> WorldY = WorldY - speed;      //an paei pano tote to Y mikrenei
@@ -295,7 +301,7 @@ public class Player extends Entity {
 
             
 
-            if(playercollision == false && keyH.attack == false) {
+            if(playercollision == false && (keyH.attack == false && MouseH.Mattack == false)) {
                 switch(direction) {
                     case "up":
                     
