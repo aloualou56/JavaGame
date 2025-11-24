@@ -12,22 +12,22 @@ public class object {
     public boolean collision = false;
     public int worldX, worldY;
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-    public int solidAreadefaultX = 5;   
-    public int solidAreadefaultY = 5; 
-    
+    public int solidAreadefaultX = 5;
+    public int solidAreadefaultY = 5;
+
     public void draw(Graphics2D g2, MainPannel gp) {
 
-        int screenX = worldX - gp.player.WorldX + gp.player.screenX;
-        int screenY = worldY - gp.player.WorldY + gp.player.screenY;
-        if(worldX + gp.tileSize > gp.player.WorldX  - gp.player.screenX && 
-           worldX - gp.tileSize < gp.player.WorldX  + gp.player.screenX && 
-           worldY + gp.tileSize > gp.player.WorldY  - gp.player.screenY && 
+        int screenX = (int)(worldX - gp.player.WorldX + gp.player.screenX);
+        int screenY = (int)(worldY - gp.player.WorldY + gp.player.screenY);
+        if(worldX + gp.tileSize > gp.player.WorldX  - gp.player.screenX &&
+           worldX - gp.tileSize < gp.player.WorldX  + gp.player.screenX &&
+           worldY + gp.tileSize > gp.player.WorldY  - gp.player.screenY &&
            worldY - gp.tileSize < gp.player.WorldY  + gp.player.screenY ) {
 
             g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
-               
+
            }
 
     }
-    
+
 }

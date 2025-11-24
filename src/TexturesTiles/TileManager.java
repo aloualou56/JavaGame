@@ -19,7 +19,7 @@ public class TileManager {
 
 
     public TileManager(MainPannel gp) {
-        
+
         this.gp = gp;
 
         tile = new Tiles[35]; //mporo na valo max 35 tiles
@@ -45,7 +45,7 @@ public class TileManager {
 
             tile[3] = new Tiles();
             tile[3].image = ImageIO.read(getClass().getResourceAsStream("/sprites/tilesets/grass.png"));
-            
+
             tile[4] = new Tiles();
             tile[4].image = ImageIO.read(getClass().getResourceAsStream("/sprites/tilesets/16x16 set/grass4.png"));
 
@@ -199,7 +199,7 @@ public class TileManager {
 
         }catch(IOException e) {
             e.printStackTrace();
-            
+
         }
     }
 
@@ -214,11 +214,11 @@ public class TileManager {
 
             int tileNum = mapTileNum[worldCol][worldRow];
 
-            int worldX = worldCol * gp.tileSize;                                            
-            int worldY = worldRow * gp.tileSize;                                            
-            int screenX = worldX - gp.player.WorldX + gp.player.screenX;                    
-            int screenY = worldY - gp.player.WorldY + gp.player.screenY;                    
-            
+            int worldX = worldCol * gp.tileSize;
+            int worldY = worldRow * gp.tileSize;
+            int screenX = (int)(worldX - gp.player.WorldX + gp.player.screenX);
+            int screenY = (int)(worldY - gp.player.WorldY + gp.player.screenY);
+
             //gia kalitero rendering efficiency code start
 
             if(worldX + gp.tileSize > gp.player.WorldX - gp.player.screenX &&
@@ -231,19 +231,19 @@ public class TileManager {
             }
 
             //telos to improved code gia efficiency sto rendering
-            
+
             worldCol++;
-            
+
             if(worldCol == gp.maxWorldCol) {
                 worldCol = 0;
-               
+
                 worldRow++;
-                
+
 
             }
         }
-    
+
     }
 
-    
+
 }

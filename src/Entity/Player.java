@@ -55,15 +55,15 @@ public class Player extends Entity {
 
         //Default settings of player
 
-        WorldX = gp.tileSize * 25;  //anti gia 100; mporo na kano to gp.tileSize * epi poso delo gia na pao se kapoio sigekrimeno simeio/tale    
+        WorldX = gp.tileSize * 25;  //anti gia 100; mporo na kano to gp.tileSize * epi poso delo gia na pao se kapoio sigekrimeno simeio/tale
         WorldY = gp.tileSize * 25;
-        speed = 4;  //posa pixel da paei se kade direction
-        direction = "left"; 
+        speed = 240;  //posa pixel da paei se kade direction
+        direction = "left";
 
-        
-        
+
+
     }
-    
+
     public void getPlayerImage() {
         try {
 
@@ -79,8 +79,8 @@ public class Player extends Entity {
             System.out.println("loaded standing5");
             standing6 = ImageIO.read(getClass().getResourceAsStream("/sprites/characters/cutted-character/standing_sprites/standing_6.png"));
             System.out.println("loaded standing6");
-            
-            
+
+
             up1 = ImageIO.read(getClass().getResourceAsStream("/sprites/characters/cutted-character/walking_sprites/walking_1.png"));
             System.out.println("loaded up1");
             up2 = ImageIO.read(getClass().getResourceAsStream("/sprites/characters/cutted-character/walking_sprites/walking_2.png"));
@@ -148,44 +148,33 @@ public class Player extends Entity {
         }
     }
 
-    public void upleft() {
-        
-        WorldX = WorldX - (speed / 1); //Για 60fps πρεπει να ειναι (speed / 2)
-        WorldY = WorldY - (speed / 1);
-        direction = "left";
+    public void upleft(double dt) {
+        direction = "up-left";
     }
-    public void upright() {
+    public void upright(double dt) {
         gp.Gamespeed = 1;
-        WorldX = WorldX + (speed / 1);
-        WorldY = WorldY - (speed / 1);
-        direction = "right";
+        direction = "up-right";
     }
-    public void downleft() {
-        
-        WorldX = WorldX - (speed / 1);
-        WorldY = WorldY + (speed / 1);
-        direction = "left";
+    public void downleft(double dt) {
+        direction = "down-left";
     }
-    public void downright() {
-        
-        WorldX = WorldX + (speed / 1);
-        WorldY = WorldY + (speed / 1);
-        direction = "right";
+    public void downright(double dt) {
+        direction = "down-right";
     }
-    
-    public void update() {   
-        System.out.println("Mattack is " + MouseH.Mattack);
+
+    public void update(double dt) {
+        // System.out.println("Mattack is " + MouseH.Mattack);
         //test gia to attack mode
         if(keyH.attack == true || MouseH.Mattack == true) {
-            
-            
+
+
             direction = "attack";
 
             spriteCounter_for_attack++;
             if(spriteCounter_for_attack > 3) {
 
                 switch(spriteNum_for_attack) {
-                    case 1: 
+                    case 1:
                     spriteNum_for_attack = 2;
                     break;
 
@@ -193,7 +182,7 @@ public class Player extends Entity {
                     spriteNum_for_attack = 3;
                     break;
 
-                    case 3: 
+                    case 3:
                     spriteNum_for_attack = 4;
                     break;
 
@@ -204,20 +193,20 @@ public class Player extends Entity {
 
                 spriteCounter_for_attack = 0;
 
-            
+
             }
-                         
+
         } else if(keyH.attack == false && MouseH.Mattack == false) {
             spriteNum_for_attack = 4; //kanei reset to animation se ena sigekrimeno image, edo evala to 4
         }
         //test gia to attack mode
-        
-        if(keyH.upPressed == false || keyH.downPressed == false || keyH.leftPressed == false || keyH.rightPressed == false ) 
-        if(keyH.attack == false && MouseH.Mattack == false) { 
+
+        if(keyH.upPressed == false || keyH.downPressed == false || keyH.leftPressed == false || keyH.rightPressed == false )
+        if(keyH.attack == false && MouseH.Mattack == false) {
             //Edo vale to standing animation na paizei
             direction = "none";
-            
-            
+
+
             spriteCounter_for_idle++;
             if(spriteCounter_for_idle > 5) {
 
@@ -259,73 +248,80 @@ public class Player extends Entity {
         if(keyH.upPressed == true || keyH.downPressed == true || keyH.leftPressed == true || keyH.rightPressed == true)
         if(keyH.attack == false && MouseH.Mattack == false) {
             if(keyH.upPressed == true) {
-                direction ="up";  //to 0,0 se x,y sto JPanel einai h pano goneia aristera
-                //Den xreiazete pleon einai sto switch kato -> WorldY = WorldY - speed;      //an paei pano tote to Y mikrenei
-            }
-            if(keyH.upPressed == true && keyH.leftPressed == true) {
-                upleft();
-                
-            }
-            if(keyH.upPressed == true && keyH.rightPressed == true) {
-                upright();
+                direction ="up";
             }
             if(keyH.downPressed == true) {
                 direction = "down";
-                //Den xreiazete pleon einai sto switch kato -> WorldY = WorldY + speed;
-            }
-            if(keyH.downPressed == true && keyH.leftPressed == true) {
-                downleft();
-            }
-            if(keyH.downPressed == true && keyH.rightPressed == true) {
-                downright();
             }
             if(keyH.leftPressed == true) {
-              
                 direction = "left";
-                //Den xreiazete pleon einai sto switch kato -> WorldX = WorldX - speed;
             }
             if(keyH.rightPressed == true) {
-               
                 direction = "right";
-                //Den xreiazete pleon einai sto switch kato -> WorldX = WorldX + speed;
+            }
+            if(keyH.upPressed == true && keyH.leftPressed == true) {
+                upleft(dt);
+            }
+            if(keyH.upPressed == true && keyH.rightPressed == true) {
+                upright(dt);
+            }
+            if(keyH.downPressed == true && keyH.leftPressed == true) {
+                downleft(dt);
+            }
+            if(keyH.downPressed == true && keyH.rightPressed == true) {
+                downright(dt);
             }
 
             // // edo vlepoume an ginete collision tou player(to rectagle) me tile to ensomati
-            playercollision = false; //einai sto Entity.Entity class to boolean 
-            gp.collisionChecker.checkTile(this);
+            playercollision = false; //einai sto Entity.Entity class to boolean
+            gp.collisionChecker.checkTile(this, dt);
 
             //elenxoume to collition me ta objects
-            int objindex = gp.collisionChecker.checkObjectCollition(this, true); //to ...this... leei dixnei oti to entity einai o player kai to ....true.... einai to boolean tou player. Gia na katalaveis des to funciton
+            int objindex = gp.collisionChecker.checkObjectCollition(this, true, dt); //to ...this... leei dixnei oti to entity einai o player kai to ....true.... einai to boolean tou player. Gia na katalaveis des to funciton
             pickUpObject(objindex);
             // an to colition einai lados tote o player mporei na kinidei
 
-            
+
 
             if(playercollision == false && (keyH.attack == false && MouseH.Mattack == false)) {
                 switch(direction) {
                     case "up":
-                    
-                    WorldY = WorldY - (speed * 2); //Για 60fps πρεπει να ειναι (speed x 1)
+                    WorldY = WorldY - (speed * dt);
                     break;
 
                     case "down":
-                    
-                    WorldY = WorldY + (speed * 2);
+                    WorldY = WorldY + (speed * dt);
                     break;
 
                     case "left":
-                    
-                    WorldX = WorldX - (speed * 2);
+                    WorldX = WorldX - (speed * dt);
                     break;
 
                     case "right":
-                    
-                    WorldX = WorldX + (speed * 2);
+                    WorldX = WorldX + (speed * dt);
+                    break;
+
+                    case "up-left":
+                    WorldX = WorldX - (speed * dt);
+                    WorldY = WorldY - (speed * dt);
+                    break;
+
+                    case "up-right":
+                    WorldX = WorldX + (speed * dt);
+                    WorldY = WorldY - (speed * dt);
+                    break;
+
+                    case "down-left":
+                    WorldX = WorldX - (speed * dt);
+                    WorldY = WorldY + (speed * dt);
+                    break;
+
+                    case "down-right":
+                    WorldX = WorldX + (speed * dt);
+                    WorldY = WorldY + (speed * dt);
                     break;
 
                     case "none":
-                    
-                    //epeidi einai to standing apla den kinite lol
                     break;
                }
             }
@@ -368,9 +364,9 @@ public class Player extends Entity {
 
                 spriteCounter = 0;
             }
-            
-        } 
-            
+
+        }
+
     }
 
     public void pickUpObject(int i) {
@@ -397,14 +393,14 @@ public class Player extends Entity {
 
     public void draw(Graphics2D g2) {
 
-        
 
-        
+
+
 
         BufferedImage image = null;
-        
+
         switch(direction) {
-            
+
             case "up":
             switch(previous_direction) {
                 case "left":
@@ -504,7 +500,7 @@ public class Player extends Entity {
                 break;
             }
             break;
-            
+
 
             case "left":
             case "up-left":
@@ -513,27 +509,27 @@ public class Player extends Entity {
             previous_direction = "left";
             if(spriteNum == 1) {
                 image = left1;
-                
+
             }
             if(spriteNum == 2) {
                 image = left2;
-                
+
             }
             if(spriteNum == 3) {
                 image = left3;
-                
+
             }
             if(spriteNum == 4) {
                 image = left4;
-                
+
             }
             if(spriteNum == 5) {
                 image = left5;
-                
+
             }
             if(spriteNum == 6) {
                 image = left6;
-                
+
             }
             break;
 
@@ -543,27 +539,27 @@ public class Player extends Entity {
             previous_direction = "right";
             if(spriteNum == 1) {
                 image = right1;
-                
+
             }
             if(spriteNum == 2) {
                 image = right2;
-                
+
             }
             if(spriteNum == 3) {
                 image = right3;
-                
+
             }
             if(spriteNum == 4) {
                 image = right4;
-                
+
             }
             if(spriteNum == 5) {
                 image = right5;
-                
+
             }
             if(spriteNum == 6) {
                 image = right6;
-                
+
             }
             break;
 
@@ -635,7 +631,7 @@ public class Player extends Entity {
                         image = fight4;
                     }
                     break;
-                    
+
                     case "right":
                     width = gp.tileSize;
                     ScreenX_for_drawing_player = screenX;
@@ -661,5 +657,5 @@ public class Player extends Entity {
         g2.drawImage(image, ScreenX_for_drawing_player, screenY, width, height, null);
     }
 
-    
+
 }
