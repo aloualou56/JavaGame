@@ -28,27 +28,27 @@ public class MainPannel extends JPanel implements Runnable {
     public final int MaxScreenRow = 6; //arxiko 12
     public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
     public final int screenHeight = tileSize * MaxScreenRow; // 576 pixels
-    
+
     //WORLD SETTINGS
 
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
-    
-    
+
+
     //Setting FPS
 
     int FPS = 30;
     public int Gamespeed = 1; // einai gia otan o paixtis pigainei plagia, anti gia na einai 2 fores pio argo afou den ginete h kinisi kano pio agro to game loop
-    
+
 
 
     TileManager tileM = new TileManager(this); //kaloume to tilManager class apo ta TextureTiles
 
     KeyHandler keyH = new KeyHandler(); //start keyhandler to game panel
     MouseHandler MouseH = new MouseHandler();
-    
+
     public CollisionChecker collisionChecker = new CollisionChecker(this);
     public Asset asset = new Asset(this);
     public Environment_Assets env_Assets = new Environment_Assets(this);
@@ -81,51 +81,46 @@ public class MainPannel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        
 
-        double drawInterval = (1000000000/FPS) / Gamespeed; //0.0069444444
-        double nextDrawTime = System.nanoTime() + drawInterval;
+        long lastTime = System.nanoTime();
+
         while(gameThread != null) {
-            
-            update();
+
+            long currentTime = System.nanoTime();
+            double dt = (currentTime - lastTime) / 1000000000.0;
+            lastTime = currentTime;
+
+            update(dt);
 
             repaint();
 
-            //Gia ta FPS poso ta perimenei gia na xanakanei to loop
-            //Nai, einai olo to kano, 
-            
+            // Optional: minimal sleep to avoid 100% CPU usage if not vsynced,
+            // but for pure delta time loop, usually we just run as fast as possible
+            // or let vsync handle it.
+            // Here I'll add a small sleep to be safe for this environment.
             try {
-                double remainingTime = nextDrawTime - System.nanoTime();
-                remainingTime = remainingTime/1000000;
-
-                if(remainingTime < 0) {
-                    remainingTime = 0;
-                }
-                Thread.sleep((long) remainingTime);
-
-                nextDrawTime += drawInterval;
+                Thread.sleep(1);
             } catch (InterruptedException e) {
-                
                 e.printStackTrace();
             }
         }
-        
+
     }
 
-    public void update() {
-     player.update();
+    public void update(double dt) {
+     player.update(dt);
      //System.out.println(player.WorldX + " " + player.WorldY);
 
     }
-    
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
-        
+
         //gia ta tiles
         tileM.draw(g2);
-        
+
         //gia ta object
         for(int i = 0; i < obj.length; i++) {
             if(obj[i] != null) {
@@ -134,15 +129,15 @@ public class MainPannel extends JPanel implements Runnable {
         }
 
         //Gia to environment
-        
+
         for(int i = 0; i < env.length; i++) {
             if(env[i] != null) {
                 env[i].draw(g2, this);
             }
-        } 
+        }
 
-        
-        
+
+
         //gia ton player
         player.draw(g2);
         g2.dispose();

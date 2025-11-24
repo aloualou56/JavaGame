@@ -13,8 +13,8 @@ public class environment {
     
 
     public void draw(Graphics2D g2, MainPannel gp) {
-        int screenX = worldX - gp.player.WorldX + gp.player.screenX;
-        int screenY = worldY - gp.player.WorldY + gp.player.screenY;
+        int screenX = (int)(worldX - gp.player.WorldX + gp.player.screenX);
+        int screenY = (int)(worldY - gp.player.WorldY + gp.player.screenY);
 
         if(worldX + gp.tileSize > gp.player.WorldX  - gp.player.screenX &&
            worldX - gp.tileSize < gp.player.WorldX  + gp.player.screenX &&
